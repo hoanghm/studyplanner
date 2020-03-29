@@ -13,6 +13,7 @@ public final class EventTable {
         public static final String COLUMN_DEADLINE = "deadline";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_NOTES = "notes";
+        public static final String COLUMN_TIME = "time";
     }
 
 }

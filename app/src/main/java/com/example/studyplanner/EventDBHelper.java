@@ -15,6 +15,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
             EventTable.EventEntry.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_DEADLINE + TEXT_TYPE + COMMA_SEP +
+            EventTable.EventEntry.COLUMN_TIME + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_NOTES + TEXT_TYPE + COMMA_SEP + " )";
 
     private static final String SQL_DELETE = "DROP TABLE IF EXISTS" + EventTable.EventEntry.TABLE_NAME;
