@@ -1,7 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.assignment5android8.AddUserActivity">
+    tools:context="com.example.android.assignment5android8.AddUserActivity" -->
+
     <item
         android:id="@+id/eventManager"
         android:title="Event Manager"
