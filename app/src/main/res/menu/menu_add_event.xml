@@ -3,14 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android.assignment5android8.AddUserActivity">
     <item
-        android:id="@+id/display"
-        android:title="Display"
+        android:id="@+id/eventManager"
+        android:title="Event Manager"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/clearDatabase"
-        android:title="Clear"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
 </menu>
