@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Study Planner</string>
+    <string name="empty_date">Date missing</string>
+    <string name="empty_event_list">Event list missing</string>
+    <string name="empty_event">Event missing</string>
+    <string name="no_data">No event</string>
 </resources>

@@ -10,15 +10,15 @@ public class EventDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "events.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_EVENT = "CREATE TABLE" + EventTable.EventEntry.TABLE_NAME + " (" +
-            EventTable.EventEntry._ID + " INTEGER PRIMRY KEY" + COMMA_SEP +
+    private static final String SQL_CREATE_EVENT = "CREATE TABLE " + EventTable.EventEntry.TABLE_NAME + " (" +
+            EventTable.EventEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
             EventTable.EventEntry.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_DEADLINE + TEXT_TYPE + COMMA_SEP +
             EventTable.EventEntry.COLUMN_TIME + TEXT_TYPE + COMMA_SEP +
-            EventTable.EventEntry.COLUMN_NOTES + TEXT_TYPE + COMMA_SEP + " )";
+            EventTable.EventEntry.COLUMN_NOTES + TEXT_TYPE + " )";
 
-    private static final String SQL_DELETE = "DROP TABLE IF EXISTS" + EventTable.EventEntry.TABLE_NAME;
+    private static final String SQL_DELETE = "DROP TABLE IF EXISTS " + EventTable.EventEntry.TABLE_NAME;
 
     public EventDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
