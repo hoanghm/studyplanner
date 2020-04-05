@@ -4,13 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/event_title"
-        android:text="@string/empty_event"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/border" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="#0022ff"
+            android:id="@+id/date" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:textColor="#0022ff"
+            android:id="@+id/event_title" />
+    </LinearLayout>
     <!--background color and borders are defined in the Drawable file-->
+
 
 </LinearLayout>

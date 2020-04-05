@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+
 public class EventsManager extends AppCompatActivity {
 
     @Override
@@ -31,10 +32,10 @@ public class EventsManager extends AppCompatActivity {
 
         String[] projection = {
                 EventTable.EventEntry.COLUMN_DEADLINE,
-                EventTable.EventEntry.COLUMN_NOTES,
-                EventTable.EventEntry.COLUMN_TIME,
+//                EventTable.EventEntry.COLUMN_NOTES,
+//                EventTable.EventEntry.COLUMN_TIME,
                 EventTable.EventEntry.COLUMN_TITLE,
-                EventTable.EventEntry.COLUMN_TYPE
+//                EventTable.EventEntry.COLUMN_TYPE
         };
 
         String[] bind = {
@@ -50,7 +51,8 @@ public class EventsManager extends AppCompatActivity {
                 bind,
                 null,
                 null,
-                EventTable.EventEntry.COLUMN_DEADLINE,
+//                EventTable.EventEntry.COLUMN_DEADLINE, //group by deadline
+                null,
                 null,
                 EventTable.EventEntry.COLUMN_DEADLINE+" ASC");
 
@@ -59,11 +61,13 @@ public class EventsManager extends AppCompatActivity {
                 R.id.event_title
         };
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.event_list_component, cursor, projection, to, 0);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.event_component, cursor, projection, to, 0);
 
+        //set list to adapter
         final ListView list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(adapter);
 
+        //message for empty db
         TextView emptyView = findViewById(android.R.id.empty);
         list.setEmptyView(emptyView);
 
@@ -100,7 +104,16 @@ public class EventsManager extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            //break;
+
+            case(R.id.clearDatabase):
+                EventDBHelper myDbHelper = new EventDBHelper(getApplicationContext());
+                SQLiteDatabase db = myDbHelper.getWritableDatabase();
+                db.delete(EventTable.EventEntry.TABLE_NAME,"1",null);
+                Toast.makeText(this, "Database cleared", Toast.LENGTH_SHORT).show();
+                Intent refresh_intent = new Intent(getApplicationContext(), EventsManager.class);
+                startActivity(refresh_intent);
+                finish();
+                return true;
         }
 
 

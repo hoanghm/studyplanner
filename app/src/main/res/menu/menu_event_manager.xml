@@ -9,4 +9,10 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
+   <item
+       android:id="@+id/clearDatabase"
+       android:title="Clear Database"
+       android:orderInCategory="100"
+       app:showAsAction="ifRoom" />
+
 </menu>
