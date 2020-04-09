@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -16,8 +18,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.List;
+
 
 public class EventsManager extends AppCompatActivity {
+    EventDBHelper dao;
+    List<DailyEvents> events;
+    EventExpListAdapter adapter;
+    ExpandableListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,61 +35,24 @@ public class EventsManager extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        EventDBHelper dao = new EventDBHelper(this.getApplicationContext());
-        SQLiteDatabase db = dao.getReadableDatabase();
+        dao = new EventDBHelper(this.getApplicationContext());
+        events = dao.getDailyEvents();
 
-        String[] projection = {
-                EventTable.EventEntry.COLUMN_DEADLINE,
-//                EventTable.EventEntry.COLUMN_NOTES,
-//                EventTable.EventEntry.COLUMN_TIME,
-                EventTable.EventEntry.COLUMN_TITLE,
-//                EventTable.EventEntry.COLUMN_TYPE
-        };
 
-        String[] bind = {
-                EventTable.EventEntry._ID,
-                EventTable.EventEntry.COLUMN_DEADLINE,
-                EventTable.EventEntry.COLUMN_NOTES,
-                EventTable.EventEntry.COLUMN_TIME,
-                EventTable.EventEntry.COLUMN_TITLE,
-                EventTable.EventEntry.COLUMN_TYPE
-        };
-
-        Cursor cursor = db.query(EventTable.EventEntry.TABLE_NAME,
-                bind,
-                null,
-                null,
-//                EventTable.EventEntry.COLUMN_DEADLINE, //group by deadline
-                null,
-                null,
-                EventTable.EventEntry.COLUMN_DEADLINE+" ASC");
-
-        int[] to = new int[]{
-                R.id.date,
-                R.id.event_title
-        };
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.event_component, cursor, projection, to, 0);
-
-        //set list to adapter
-        final ListView list = (ListView) findViewById(android.R.id.list);
+        adapter = new EventExpListAdapter(this, events);
+        list = findViewById(R.id.eventList);
         list.setAdapter(adapter);
 
-        //message for empty db
-        TextView emptyView = findViewById(android.R.id.empty);
-        list.setEmptyView(emptyView);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-
-                String selectedItem = (String) cursor.getString(cursor.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE));
-
-                Toast toast = Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_SHORT);
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                EventDBObject selected = events.get(groupPosition).getChildren().get(childPosition);
+                Toast toast = Toast.makeText(getApplicationContext(), selected.getNotes(), Toast.LENGTH_SHORT);
                 toast.show();
+                return true;
             }
         });
+
     }
 
     @Override

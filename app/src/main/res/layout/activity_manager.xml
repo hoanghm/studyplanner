@@ -10,28 +10,16 @@
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
 
-    <include layout="@layout/event_list_component" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp">
 
-<!--    <ListView-->
-<!--        android:id="@android:id/list"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="76dp"-->
-<!--        android:ems="10"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
-<!--    <TextView-->
-<!--        android:id="@android:id/empty"-->
-<!--        android:text="@string/no_data"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="76dp"-->
-<!--        android:ems="10"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"/>-->
+        <ExpandableListView
+            android:id="@+id/eventList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,8 +1,13 @@
 package com.example.studyplanner;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventDBHelper extends SQLiteOpenHelper {
 
@@ -37,6 +42,61 @@ public class EventDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE);
         onCreate(db);
+    }
+
+    public Cursor getDataAsCursor(String[] bind, boolean distinct){
+        return this.getReadableDatabase().query(distinct,
+                EventTable.EventEntry.TABLE_NAME,
+                bind,
+                null,
+                null,
+                null,
+                null,
+                EventTable.EventEntry.COLUMN_DEADLINE+" ASC",
+                null);
+    }
+
+    /**
+     *
+     * @return list of all DailyEvents containing each event.
+     */
+    public List<DailyEvents> getDailyEvents(){
+        String[] dateBind = {EventTable.EventEntry.COLUMN_DEADLINE};
+        Cursor c = getDataAsCursor(dateBind, true);
+        List<DailyEvents> list = new ArrayList<>();
+        if(c!=null && c.moveToFirst()){
+            do{
+                list.add(new DailyEvents(c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE))));
+            }while(c.moveToNext());
+        }
+        c.close();
+
+        String[] eventBind = {EventTable.EventEntry._ID,
+                EventTable.EventEntry.COLUMN_TITLE,
+                EventTable.EventEntry.COLUMN_DEADLINE,
+                EventTable.EventEntry.COLUMN_TYPE,
+                EventTable.EventEntry.COLUMN_NOTES,
+                EventTable.EventEntry.COLUMN_TIME};
+        c=getDataAsCursor(eventBind, false);
+        if(c!=null && c.moveToFirst()){
+          for(DailyEvents d: list){
+              List<EventDBObject> children= new ArrayList<>();
+              do{
+                  if(d.getDate().equals(c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)))){
+                      children.add(new EventDBObject(c.getString(c.getColumnIndex(EventTable.EventEntry._ID)),
+                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE)),
+                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)),
+                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE)),
+                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES)),
+                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME))));
+                  }
+              }while(c.moveToNext());
+              d.setChildren(children);
+              c.moveToFirst();
+          }
+        }
+        c.close();
+        return list;
     }
 
 }
