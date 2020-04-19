@@ -14,22 +14,21 @@
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="76dp"
         android:ems="10"
-        android:hint="Titleee"
+        android:hint="Title"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/typeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:hint="Type"
+        android:text="Type:"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleView" />
 
@@ -41,7 +40,7 @@
         android:hint="Deadline (MM/DD/YY)"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/typeView" />
+        app:layout_constraintTop_toBottomOf="@+id/typeRadio" />
 
     <EditText
         android:id="@+id/notesView"
@@ -75,18 +74,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deadlineView" />
 
-    <EditText
-        android:id="@+id/editText"
+    <RadioGroup
+        android:id="@+id/typeRadio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Edit Event"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/typeView"
+        >
+
+        <RadioButton
+            android:id="@+id/radioHomework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Homework"
+            app:layout_constraintStart_toEndOf="@+id/typeView"
+            tools:layout_editor_absoluteY="121dp"
+            android:layout_marginStart="30dp"/>
+
+        <RadioButton
+            android:id="@+id/radioExam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exam"
+            app:layout_constraintStart_toEndOf="@+id/radioMale"
+            tools:layout_editor_absoluteY="121dp"
+            android:layout_marginStart="30dp"/>
+
+        <RadioButton
+            android:id="@+id/radioOthers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Others"
+            app:layout_constraintStart_toEndOf="@+id/radioMale"
+            tools:layout_editor_absoluteY="121dp"
+            android:layout_marginStart="30dp"/>
+
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

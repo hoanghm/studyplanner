@@ -39,7 +39,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         deadlineView = findViewById(R.id.deadlineView);
         timeView = findViewById(R.id.timeView);
         notesView = findViewById(R.id.notesView);
-        typeView = findViewById(typeRadioGroup.getCheckedRadioButtonId());
 
         // Date Picker dialog for deadline view
         deadlineView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -81,6 +80,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
 
+                typeView = findViewById(typeRadioGroup.getCheckedRadioButtonId());
                 //get values from the add form
                 values.put(EventTable.EventEntry.COLUMN_TITLE, titleView.getText().toString());
                 values.put(EventTable.EventEntry.COLUMN_TYPE, typeView.getText().toString());

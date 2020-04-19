@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,10 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,14 +28,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Hashtable;
 
 public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     TextView titleView, typeView, deadlineView, timeView, notesView;
+    RadioGroup typeRadio;
     String event_id, event_title, event_deadline, event_notes, event_time, event_type;
     EventDBHelper dao;
     SQLiteDatabase db;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,25 +53,28 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
         //fill existing data into the textViews
         dao = new EventDBHelper(this.getApplicationContext());
         db = dao.getWritableDatabase();
+
         Cursor c = db.rawQuery("SELECT * FROM " + EventTable.EventEntry.TABLE_NAME + " WHERE " + EventTable.EventEntry._ID + " = " + event_id, null);
         c.moveToFirst();
-
         event_title = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE));
         event_deadline = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE));
         event_time = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME));
         event_type = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE));
         event_notes = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES));
-
         c.close();
 
+        Hashtable<String,Integer> type_dict = new Hashtable<String, Integer>();
+        type_dict.put("Homework", R.id.radioHomework);
+        type_dict.put("Exam", R.id.radioExam);
+
         titleView = findViewById(R.id.titleView);
-        typeView = findViewById(R.id.typeView);
+        typeRadio = findViewById(R.id.typeRadio);
         deadlineView = findViewById(R.id.deadlineView);
         timeView = findViewById(R.id.timeView);
         notesView = findViewById(R.id.notesView);
 
         titleView.setText(event_title);
-        typeView.setText(event_type);
+        typeRadio.check(type_dict.getOrDefault(event_type,R.id.radioOthers));
         deadlineView.setText(event_deadline);
         timeView.setText(event_time);
         notesView.setText(event_notes);
@@ -124,7 +133,7 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
                 String sql_del = "DELETE FROM " + EventTable.EventEntry.TABLE_NAME + " WHERE " + EventTable.EventEntry._ID + " = " + event_id;
                 db.execSQL(sql_del);
 
-
+                typeView  = findViewById(typeRadio.getCheckedRadioButtonId());
                 //get values from the add form
                 values.put(EventTable.EventEntry.COLUMN_TITLE, titleView.getText().toString());
                 values.put(EventTable.EventEntry.COLUMN_TYPE, typeView.getText().toString());
