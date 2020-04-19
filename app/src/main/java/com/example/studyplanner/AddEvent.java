@@ -164,7 +164,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     // after deadline was selected
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = month + "/" + dayOfMonth + "/" + year;
+        String date = (month+1) + "/" + dayOfMonth + "/" + year;
         deadlineView.setText(date);
     }
 }
