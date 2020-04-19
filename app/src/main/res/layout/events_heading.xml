@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textColor="#0022ff"
-        android:id="@+id/event_date" />
+        android:id="@+id/event_date"
+        android:layout_marginLeft="20dp"/>
 
 </LinearLayout>

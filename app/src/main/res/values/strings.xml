@@ -4,4 +4,7 @@
     <string name="empty_event_list">Event list missing</string>
     <string name="empty_event">Event missing</string>
     <string name="no_data">No event</string>
+
+
+    <string name="event_time_component">&#160;  (at %1$s)</string>
 </resources>

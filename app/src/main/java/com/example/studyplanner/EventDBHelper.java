@@ -31,6 +31,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
 
     public EventDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
@@ -43,6 +44,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE);
         onCreate(db);
     }
+
 
     public Cursor getDataAsCursor(String[] bind, boolean distinct){
         return this.getReadableDatabase().query(distinct,

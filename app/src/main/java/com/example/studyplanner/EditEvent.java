@@ -4,14 +4,15 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -19,40 +20,78 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Calendar;
 
-public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     TextView titleView, typeView, deadlineView, timeView, notesView;
-    RadioGroup typeRadioGroup;
+    String event_id, event_title, event_deadline, event_notes, event_time, event_type;
+    EventDBHelper dao;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_edit);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //get Id of editing event
+        event_id = getIntent().getStringExtra("EVENT_ID");
+
+        //fill existing data into the textViews
+        dao = new EventDBHelper(this.getApplicationContext());
+        db = dao.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + EventTable.EventEntry.TABLE_NAME + " WHERE " + EventTable.EventEntry._ID + " = " + event_id, null);
+        c.moveToFirst();
+
+        event_title = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE));
+        event_deadline = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE));
+        event_time = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME));
+        event_type = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE));
+        event_notes = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES));
+
+        c.close();
+
         titleView = findViewById(R.id.titleView);
-        typeRadioGroup = findViewById(R.id.typeRadio);
+        typeView = findViewById(R.id.typeView);
         deadlineView = findViewById(R.id.deadlineView);
         timeView = findViewById(R.id.timeView);
         notesView = findViewById(R.id.notesView);
-        typeView = findViewById(typeRadioGroup.getCheckedRadioButtonId());
 
-        // Date Picker dialog for deadline view
+        titleView.setText(event_title);
+        typeView.setText(event_type);
+        deadlineView.setText(event_deadline);
+        timeView.setText(event_time);
+        notesView.setText(event_notes);
+
+        //get date and time of editing event to set default for datepicker, time picker
+        String[] date = event_deadline.split("/");
+        String[] time = event_time.split(":");
+        final int event_month = Integer.parseInt(date[0]);
+        final int event_day = Integer.parseInt(date[1]);
+        final int event_year = Integer.parseInt(date[2]);
+        final int event_hour = Integer.parseInt(time[0]);
+        final int event_minute = Integer.parseInt(time[1]);
+        Log.d("TimeError", Integer.toString(event_year));
+
+                // Date Picker dialog for deadline view
         deadlineView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus)
-                    showDatePickerDialog();
+                    showDatePickerDialog(event_month, event_day, event_year);
             }
         });
         deadlineView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showDatePickerDialog(event_month, event_day, event_year);
             }
         });
 
@@ -61,13 +100,13 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus)
-                    showTimePickerDialog();
+                    showTimePickerDialog(event_hour, event_minute);
             }
         });
         timeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showTimePickerDialog();
+                showTimePickerDialog(event_hour, event_minute);
             }
         });
 
@@ -80,6 +119,11 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 EventDBHelper dbHelper = new EventDBHelper(getApplicationContext());
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
+
+                //delete the old event before adding the updated version
+                String sql_del = "DELETE FROM " + EventTable.EventEntry.TABLE_NAME + " WHERE " + EventTable.EventEntry._ID + " = " + event_id;
+                db.execSQL(sql_del);
+
 
                 //get values from the add form
                 values.put(EventTable.EventEntry.COLUMN_TITLE, titleView.getText().toString());
@@ -99,14 +143,13 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 if (newRowId == -1)
                     toast_mes = "ERROR";
                 else
-                    toast_mes = "New event added";
-                Toast.makeText(AddEvent.this, toast_mes, Toast.LENGTH_SHORT).show();
+                    toast_mes = "Event edited successfully";
+                Toast.makeText(EditEvent.this, toast_mes, Toast.LENGTH_SHORT).show();
 
-                //clear input fields
-                titleView.setText("");
-                deadlineView.setText("");
-                timeView.setText("");
-                notesView.setText("");
+                //switch back to EventManager
+                Intent intent = new Intent(getApplicationContext(), EventsManager.class);
+                startActivity(intent);
+
 
             }
         });
@@ -134,18 +177,19 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     }
 
-    public void showDatePickerDialog() {
+    public void showDatePickerDialog(int month, int day, int year) {
         Calendar cal = Calendar.getInstance();
+        Log.d("TimeErr", Integer.toString(year));
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 this,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH));
+                year,
+                month,
+                day);
         datePickerDialog.show();
     }
 
-    public void showTimePickerDialog() {
+    public void showTimePickerDialog(int hour, int minute) {
         Calendar cal = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 this,
@@ -155,8 +199,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         timeView.setText(hourOfDay + ":" + minute);
                     }
                 },
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
+                hour,
+                minute,
                 false);
         timePickerDialog.show();
     }
@@ -167,4 +211,5 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         String date = month + "/" + dayOfMonth + "/" + year;
         deadlineView.setText(date);
     }
+
 }
