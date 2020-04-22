@@ -87,7 +87,6 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
         final int event_year = Integer.parseInt(date[2]);
         final int event_hour = Integer.parseInt(time[0]);
         final int event_minute = Integer.parseInt(time[1]);
-        Log.d("TimeError", Integer.toString(event_year));
 
                 // Date Picker dialog for deadline view
         deadlineView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -100,7 +99,11 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
         deadlineView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(event_month, event_day, event_year);
+                String[] cur_deadline = deadlineView.getText().toString().split("/");
+                int year = Integer.parseInt(cur_deadline[2]);
+                int month = Integer.parseInt(cur_deadline[0]);
+                int day = Integer.parseInt(cur_deadline[1]);
+                showDatePickerDialog(year, month, day);
             }
         });
 
@@ -115,7 +118,10 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
         timeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showTimePickerDialog(event_hour, event_minute);
+                String[] cur_time = timeView.getText().toString().split(":");
+                int hour = Integer.parseInt(cur_time[0]);
+                int minute = Integer.parseInt(cur_time[1]);
+                showTimePickerDialog(hour, minute);
             }
         });
 

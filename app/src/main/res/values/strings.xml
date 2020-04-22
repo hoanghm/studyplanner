@@ -5,9 +5,19 @@
     <string name="empty_event">Event missing</string>
     <string name="no_data">No event</string>
     <string name="nothing">No task</string>
-    <string name="event_time_component">&#160;  (at %1$s)</string>
+    <string name="event_time_component">&#160;  (%1$s)</string>
     <string-array name="typeSelection_array">
         <item>Time</item>
         <item>Type</item>
     </string-array>
+
+    <string name="event_type_1">Homework</string>
+    <string name="event_type_2">Exam</string>
+    <string name="event_type_3">Others</string>
+    <string-array name="event_types">
+        <item>@string/event_type_1</item>
+        <item>@string/event_type_2</item>
+        <item>@string/event_type_3</item>
+    </string-array>
+
 </resources>

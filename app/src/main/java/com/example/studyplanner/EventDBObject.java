@@ -42,4 +42,28 @@ public class EventDBObject {
         return time;
     }
 
+    public int compare_time(EventDBObject o) {
+        String[] cur_time = this.time.split(":");
+        int cur_hour = Integer.parseInt(cur_time[0]);
+        int cur_minute = Integer.parseInt(cur_time[1]);
+
+        String[] o_time = o.time.split(":");
+        int o_hour = Integer.parseInt(o_time[0]);
+        int o_minute = Integer.parseInt(o_time[1]);
+
+        //compare hour
+        if (cur_hour != o_hour)
+            return Integer.compare(cur_hour, o_hour);
+        else    //compare minute
+            return Integer.compare(cur_minute, o_minute);
+    }
+
+    public boolean smallerThan(EventDBObject o) {
+        int result = compare_time(o);
+        if (result == -1)
+            return true;
+        else
+            return false;
+    }
+
 }

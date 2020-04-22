@@ -44,14 +44,22 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         deadlineView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    showDatePickerDialog();
+                if(hasFocus) {
+                    Calendar cal = Calendar.getInstance();
+                    showDatePickerDialog(cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH));
+                }
             }
-        });
+        }); //2nd time onclick
         deadlineView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                String[] cur_deadline = deadlineView.getText().toString().split("/");
+                int year = Integer.parseInt(cur_deadline[2]);
+                int month = Integer.parseInt(cur_deadline[0]);
+                int day = Integer.parseInt(cur_deadline[1]);
+                showDatePickerDialog(year, month, day);
             }
         });
 
@@ -59,14 +67,19 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         timeView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    showTimePickerDialog();
+                if(hasFocus) {
+                    Calendar cal = Calendar.getInstance();
+                    showTimePickerDialog(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+                }
             }
-        });
+        }); //2nd time onclick
         timeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showTimePickerDialog();
+                String[] cur_time = timeView.getText().toString().split(":");
+                int hour = Integer.parseInt(cur_time[0]);
+                int minute = Integer.parseInt(cur_time[1]);
+                showTimePickerDialog(hour, minute);
             }
         });
 
@@ -134,18 +147,17 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     }
 
-    public void showDatePickerDialog() {
-        Calendar cal = Calendar.getInstance();
+    public void showDatePickerDialog(int year, int month, int day) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 this,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH));
+                year,
+                month,
+                day);
         datePickerDialog.show();
     }
 
-    public void showTimePickerDialog() {
+    public void showTimePickerDialog(int hour, int minute) {
         Calendar cal = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 this,

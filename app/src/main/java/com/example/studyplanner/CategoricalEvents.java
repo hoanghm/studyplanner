@@ -1,28 +1,31 @@
 package com.example.studyplanner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeworkEvents {
-    private String date;
+public class CategoricalEvents {
+    private String type;
     private List<EventDBObject> children;
 
-    public HomeworkEvents(String date){
-        this.date = date;
+    public CategoricalEvents(String type){
+        this.type = type;
+        this.children = new ArrayList<>();
     }
 
     public void setChildren(List<EventDBObject> c){
         this.children=c;
     }
 
-    public String getDate(){
-        return date;
+    public String getType(){
+        return this.type;
     }
 
     public List<EventDBObject> getChildren() {
-        return children;
+        return this.children;
     }
 
     public int getNbChild(){
         return children.size();
     }
+
 }
