@@ -1,5 +1,6 @@
 package com.example.studyplanner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DailyEvents {
@@ -9,6 +10,7 @@ public class DailyEvents {
 
     public DailyEvents(String date){
         this.date = date;
+        this.children = new ArrayList<>();
     }
 
     public void setChildren(List<EventDBObject> c){
@@ -32,7 +34,7 @@ public class DailyEvents {
         for (int i=0; i<this.length; i++) {
             int smallest_index = i;
             for (int j=i+1; j<this.length; j++) {
-                if(this.children.get(j).smallerThan(this.children.get(smallest_index)))
+                if(this.children.get(j).timeSmallerThan(this.children.get(smallest_index)))
                     smallest_index = j;
             }
             EventDBObject smallest_time = this.children.get(smallest_index);

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getDataAsCursor(String[] bind, boolean distinct){
+    public Cursor getDataAsCursor(String[] bind, boolean distinct) {
         return this.getReadableDatabase().query(distinct,
                 EventTable.EventEntry.TABLE_NAME,
                 bind,
@@ -64,17 +65,16 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *
      * @return list of all DailyEvents containing each event.
      */
-    public List<DailyEvents> getDailyEvents(){
+    public List<DailyEvents> getDailyEvents() {
         String[] dateBind = {EventTable.EventEntry.COLUMN_DEADLINE};
         Cursor c = getDataAsCursor(dateBind, true);
         List<DailyEvents> list = new ArrayList<>();
-        if(c!=null && c.moveToFirst()){
-            do{
+        if (c != null && c.moveToFirst()) {
+            do {
                 list.add(new DailyEvents(c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE))));
-            }while(c.moveToNext());
+            } while (c.moveToNext());
         }
         c.close();
 
@@ -84,33 +84,33 @@ public class EventDBHelper extends SQLiteOpenHelper {
                 EventTable.EventEntry.COLUMN_TYPE,
                 EventTable.EventEntry.COLUMN_NOTES,
                 EventTable.EventEntry.COLUMN_TIME};
-        c=getDataAsCursor(eventBind, false);
-        if(c!=null && c.moveToFirst()){
-          for(DailyEvents d: list){
-              List<EventDBObject> children= new ArrayList<>();
-              do{
-                  if(d.getDate().equals(c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)))){
-                      children.add(new EventDBObject(c.getString(c.getColumnIndex(EventTable.EventEntry._ID)),
-                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE)),
-                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)),
-                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE)),
-                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES)),
-                                                     c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME))));
-                  }
-              }while(c.moveToNext());
-              d.setChildren(children);
-              d.sortTimes();
-              c.moveToFirst();
-          }
+        c = getDataAsCursor(eventBind, false);
+        if (c != null && c.moveToFirst()) {
+            for (DailyEvents d : list) {
+                List<EventDBObject> children = new ArrayList<>();
+                do {
+                    if (d.getDate().equals(c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)))) {
+                        children.add(new EventDBObject(c.getString(c.getColumnIndex(EventTable.EventEntry._ID)),
+                                c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE)),
+                                c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE)),
+                                c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE)),
+                                c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES)),
+                                c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME))));
+                    }
+                } while (c.moveToNext());
+                d.setChildren(children);
+                d.sortTimes();
+                c.moveToFirst();
+            }
         }
         c.close();
 
         //sort the list by dates
         int list_length = list.size();
-        for (int i=0; i<list_length; i++) {
+        for (int i = 0; i < list_length; i++) {
             int smallest_index = i;
-            for (int j=i+1; j<list_length; j++) {
-                if(list.get(j).smallerThan(list.get(smallest_index)))
+            for (int j = i + 1; j < list_length; j++) {
+                if (list.get(j).smallerThan(list.get(smallest_index)))
                     smallest_index = j;
             }
             DailyEvents smallest_date = list.get(smallest_index);
@@ -122,14 +122,16 @@ public class EventDBHelper extends SQLiteOpenHelper {
 
     }
 
-
+    /*
+    Return a list containing lists of events of the same type
+     */
     public List<CategoricalEvents> getCategoricalEvents() {
 
         Resources res = this.context.getResources();
         String[] types = res.getStringArray(R.array.event_types);
 
         Hashtable<String, CategoricalEvents> category_map = new Hashtable<>();
-        for (String s: types) {
+        for (String s : types) {
             category_map.put(s, new CategoricalEvents(s));
         }
 
@@ -144,15 +146,75 @@ public class EventDBHelper extends SQLiteOpenHelper {
                         cur_type,
                         c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES)),
                         c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME)));
-
-                category_map.get(cur_type).getChildren().add(cur_object);
+                try {
+                    category_map.get(cur_type).getChildren().add(cur_object);
+                } catch (NullPointerException e) {
+                    Log.d("NullPointer", e.getMessage());
+                }
             } while (c.moveToNext());
         }
+
+        //sort items by date
+        for (CategoricalEvents cat : category_map.values()) {
+            List<EventDBObject> list = cat.getChildren();
+            int list_length = list.size();
+            for (int i = 0; i < list_length; i++) {
+                int smallest_index = i;
+                for (int j = i + 1; j < list_length; j++) {
+                    if (list.get(j).dateSmallerThan(list.get(smallest_index)))
+                        smallest_index = j;
+                }
+                EventDBObject smallest_date = list.get(smallest_index);
+                list.set(smallest_index, list.get(i));
+                list.set(i, smallest_date);
+            }
+        }
+
 
         List<CategoricalEvents> events_by_type = new ArrayList<>();
         events_by_type.addAll(category_map.values());
 
         return events_by_type;
+    }
+
+    /*
+    Return a list containing today's events
+     */
+    public List<EventDBObject> getTodayEvents() {
+
+        Calendar cal = Calendar.getInstance();
+        String year = Integer.toString(cal.get(Calendar.YEAR));
+        String month = Integer.toString(cal.get(Calendar.MONTH) + 1);
+        String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+
+        String date_of_today = month + "/" + day + "/" + year;
+
+        DailyEvents today_events = new DailyEvents(date_of_today);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + EventTable.EventEntry.TABLE_NAME, null);
+        if (c != null && c.moveToFirst()) {
+            do {
+                String deadline = c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_DEADLINE));
+                Log.d("date_of_today", date_of_today);
+                if (!deadline.equals(date_of_today)) {
+                    Log.d("current_date", deadline);
+                    continue;
+                }
+                Log.d("checkRun", "Running");
+                EventDBObject cur_object = new EventDBObject(c.getString(c.getColumnIndex(EventTable.EventEntry._ID)),
+                        c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TITLE)),
+                        deadline,
+                        c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TYPE)),
+                        c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_NOTES)),
+                        c.getString(c.getColumnIndex(EventTable.EventEntry.COLUMN_TIME)));
+                today_events.getChildren().add(cur_object);
+            } while (c.moveToNext());
+        }
+
+        today_events.sortTimes();
+
+        return today_events.getChildren();
     }
 
 }

@@ -4,15 +4,22 @@
 
 
    <item
+       android:id="@+id/switch_sort"
+       android:title="Sort by Type"
+       android:orderInCategory="100"
+       app:showAsAction="ifRoom" />
+
+   <item
         android:id="@+id/addEvent"
         android:title="Create new entry"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
    <item
-       android:id="@+id/clearDatabase"
-       android:title="Clear Database"
+       android:id="@+id/homePage"
+       android:title="Home Page"
        android:orderInCategory="100"
        app:showAsAction="ifRoom" />
+
 
 </menu>

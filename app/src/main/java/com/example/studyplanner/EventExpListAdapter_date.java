@@ -15,12 +15,12 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class EventExpListAdapter extends BaseExpandableListAdapter {
+public class EventExpListAdapter_date extends BaseExpandableListAdapter {
 
     Context context;
     List<DailyEvents> listGroups;
 
-    public EventExpListAdapter(Context context, List<DailyEvents> listGroups){
+    public EventExpListAdapter_date(Context context, List<DailyEvents> listGroups){
         this.context=context;
         this.listGroups=listGroups;
     }

@@ -1,19 +1,11 @@
 package com.example.studyplanner;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,9 +15,12 @@ import java.util.List;
 
 public class EventsManager extends AppCompatActivity {
     EventDBHelper dao;
-    List<DailyEvents> events;
-    EventExpListAdapter adapter;
+    List<DailyEvents> daily_events;
+    EventExpListAdapter_date daily_adapter;
     ExpandableListView list;
+    List<CategoricalEvents> categorical_events;
+    EventExpListAdapter_type categorical_adapter;
+    Boolean sortByDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +31,16 @@ public class EventsManager extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dao = new EventDBHelper(this.getApplicationContext());
-        events = dao.getDailyEvents();
 
+        daily_events = dao.getDailyEvents();
+        categorical_events = dao.getCategoricalEvents();
+        daily_adapter = new EventExpListAdapter_date(this, daily_events);
+        categorical_adapter = new EventExpListAdapter_type(this, categorical_events);
 
-        adapter = new EventExpListAdapter(this, events);
+        sortByDate = true;
+
         list = findViewById(R.id.eventList);
-        list.setAdapter(adapter);
-
-        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                EventDBObject selected = events.get(groupPosition).getChildren().get(childPosition);
-                Toast toast = Toast.makeText(getApplicationContext(), selected.getNotes(), Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-            }
-        });
+        list.setAdapter(daily_adapter);
 
     }
 
@@ -74,17 +63,28 @@ public class EventsManager extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddEvent.class);
                 startActivity(intent);
                 finish();
-                return true;
+                break;
 
-            case(R.id.clearDatabase):
-                EventDBHelper myDbHelper = new EventDBHelper(getApplicationContext());
-                SQLiteDatabase db = myDbHelper.getWritableDatabase();
-                db.delete(EventTable.EventEntry.TABLE_NAME,"1",null);
-                Toast.makeText(this, "Database cleared", Toast.LENGTH_SHORT).show();
-                Intent refresh_intent = new Intent(getApplicationContext(), EventsManager.class);
-                startActivity(refresh_intent);
+            case(R.id.switch_sort):
+                TextView switch_button = findViewById(R.id.switch_sort);
+                if (sortByDate) {
+                    list.setAdapter(categorical_adapter);
+                    switch_button.setText("Sort by date");
+                    sortByDate = false;
+                }
+                else {
+                    list.setAdapter(daily_adapter);
+                    switch_button.setText("Sort by type");
+                    sortByDate = true;
+                }
+                break;
+
+            case(R.id.homePage):
+                Intent homeIntent = new Intent(getApplicationContext(), HomePage.class);
+                startActivity(homeIntent);
                 finish();
-                return true;
+                break;
+
         }
 
 
