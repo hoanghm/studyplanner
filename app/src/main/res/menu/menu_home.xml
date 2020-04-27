@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/addEvent"
-        android:title="Create new entry"/>
+        android:title="@string/create_new_entry"/>
     <item
         android:id="@+id/eventManager"
-        android:title="Event Manager"/>
+        android:title="@string/event_manager"/>
 </menu>

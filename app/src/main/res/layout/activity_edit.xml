@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
         android:ems="10"
-        android:hint="Title"
+        android:hint="@string/headingTitle"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Type:"
+        android:text="@string/headingType"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleView" />
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Deadline (MM/DD/YY)"
+        android:hint="@string/deadline_mm_dd_yy"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/typeRadio" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Notes"
+        android:hint="@string/notes"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:text="Submit"
+        android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="time"
-        android:hint="Time"
+        android:hint="@string/headingTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deadlineView" />
 

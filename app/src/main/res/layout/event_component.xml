@@ -39,14 +39,14 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:id="@+id/edit_event"
-                android:text="Edit"/>
+                android:text="@string/edit"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:id="@+id/done_event"
-                android:text="Delete"/>
+                android:text="@string/delete"/>
         </LinearLayout>
 
 

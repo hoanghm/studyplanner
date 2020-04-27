@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/eventManager"
-        android:title="Event Manager"
+        android:title="@string/event_manager"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 

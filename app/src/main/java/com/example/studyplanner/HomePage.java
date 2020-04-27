@@ -4,28 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class HomePage extends AppCompatActivity {
-    Spinner typeSelection;
     EventDBHelper dao;
     List<EventDBObject> events;
     ListView list;
@@ -49,6 +35,19 @@ public class HomePage extends AppCompatActivity {
         list.setEmptyView(emptyView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dao = new EventDBHelper(this);
+        events = dao.getTodayEvents();
+        HomePageAdapter adapter = new HomePageAdapter(this, events);
+
+        list = findViewById(R.id.eventList);
+        list.setAdapter(adapter);
+
+        TextView emptyView = findViewById(R.id.empty);
+        list.setEmptyView(emptyView);
+    }
 
     //TODO: change menu to something more fitting. maybe add a toolbox?
     @Override
@@ -72,9 +71,7 @@ public class HomePage extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
-
         return super.onOptionsItemSelected(item);
-
     }
+
 }

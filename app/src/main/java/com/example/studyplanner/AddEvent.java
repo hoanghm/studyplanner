@@ -121,6 +121,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 timeView.setText("");
                 notesView.setText("");
 
+                finish();
+
             }
         });
     }
@@ -164,7 +166,21 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        timeView.setText(hourOfDay + ":" + minute);
+                        String res="";
+                        if(hourOfDay<10){
+                            res += "0"+hourOfDay;
+                        }
+                        else{
+                            res+= hourOfDay;
+                        }
+                        res+=":";
+                        if(minute<10){
+                            res += "0"+minute;
+                        }
+                        else{
+                            res+= minute;
+                        }
+                        timeView.setText(res);
                     }
                 },
                 cal.get(Calendar.HOUR_OF_DAY),

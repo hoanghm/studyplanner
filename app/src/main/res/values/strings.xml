@@ -6,14 +6,23 @@
     <string name="no_data">No event</string>
     <string name="nothing">No task</string>
     <string name="event_time_component">&#160;  (%1$s)</string>
-    <string-array name="typeSelection_array">
-        <item>Time</item>
-        <item>Type</item>
-    </string-array>
 
     <string name="event_type_1">Homework</string>
     <string name="event_type_2">Exam</string>
     <string name="event_type_3">Others</string>
+    <string name="homeTitle">Today\'s tasks</string>
+    <string name="headingTitle">Title</string>
+    <string name="headingType">Type</string>
+    <string name="headingTime">Time</string>
+    <string name="deadline_mm_dd_yy">Deadline (MM/DD/YY)</string>
+    <string name="notes">Notes</string>
+    <string name="submit">Submit</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="sort_by_type">Sort by Type</string>
+    <string name="home_page">Home Page</string>
+    <string name="create_new_entry">Create new entry</string>
+    <string name="event_manager">Event Manager</string>
     <string-array name="event_types">
         <item>@string/event_type_1</item>
         <item>@string/event_type_2</item>

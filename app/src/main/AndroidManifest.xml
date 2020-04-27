@@ -16,7 +16,8 @@
         </activity>
         <activity android:name=".EditEvent">
         </activity>
-        <activity android:name=".HomePage">
+        <activity android:name=".HomePage"
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
