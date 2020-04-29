@@ -59,7 +59,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 int year = Integer.parseInt(cur_deadline[2]);
                 int month = Integer.parseInt(cur_deadline[0]);
                 int day = Integer.parseInt(cur_deadline[1]);
-                showDatePickerDialog(year, month, day);
+                showDatePickerDialog(year, month-1, day);
             }
         });
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="title_weight" type="integer" format="float">0.35</item>
+    <item name="type_weight" type="integer" format="float">0.25</item>
+    <item name="time_weight" type="integer" format="float">0.2</item>
+    <item name="notes_weight" type="integer" format="float">0.2</item>
+</resources>

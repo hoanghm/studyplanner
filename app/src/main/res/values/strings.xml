@@ -14,9 +14,13 @@
     <string name="headingTitle">Title</string>
     <string name="headingType">Type</string>
     <string name="headingTime">Time</string>
+    <string name="headingNotes">Notes</string>
+    <string name="show_notes">Show</string>
+    <string name="headingDeadline">Deadline</string>
     <string name="deadline_mm_dd_yy">Deadline (MM/DD/YY)</string>
     <string name="notes">Notes</string>
     <string name="submit">Submit</string>
+    <string name="save">Save</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="sort_by_type">Sort by Type</string>
@@ -28,5 +32,7 @@
         <item>@string/event_type_2</item>
         <item>@string/event_type_3</item>
     </string-array>
+    <string name="date_splitter">/</string>
+    <string name="time_splitter">:</string>
 
 </resources>

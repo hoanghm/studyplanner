@@ -93,7 +93,7 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus)
-                    showDatePickerDialog(event_month, event_day, event_year);
+                    showDatePickerDialog(event_month-1, event_day, event_year);
             }
         });
         deadlineView.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +103,7 @@ public class EditEvent extends AppCompatActivity implements DatePickerDialog.OnD
                 int year = Integer.parseInt(cur_deadline[2]);
                 int month = Integer.parseInt(cur_deadline[0]);
                 int day = Integer.parseInt(cur_deadline[1]);
-                showDatePickerDialog(year, month, day);
+                showDatePickerDialog(month-1, day, year);
             }
         });
 

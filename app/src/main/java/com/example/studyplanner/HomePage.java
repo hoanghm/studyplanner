@@ -14,7 +14,7 @@ import java.util.List;
 public class HomePage extends AppCompatActivity {
     EventDBHelper dao;
     List<EventDBObject> events;
-    ListView list;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +28,15 @@ public class HomePage extends AppCompatActivity {
         events = dao.getTodayEvents();
         HomePageAdapter adapter = new HomePageAdapter(this, events);
 
-        list = findViewById(R.id.eventList);
-        list.setAdapter(adapter);
+        // Show Today's tasks
+        listView = findViewById(R.id.eventList);
+        listView.setAdapter(adapter);
 
         TextView emptyView = findViewById(R.id.empty);
-        list.setEmptyView(emptyView);
+        listView.setEmptyView(emptyView);
+
+
+
     }
 
     @Override
@@ -42,11 +46,11 @@ public class HomePage extends AppCompatActivity {
         events = dao.getTodayEvents();
         HomePageAdapter adapter = new HomePageAdapter(this, events);
 
-        list = findViewById(R.id.eventList);
-        list.setAdapter(adapter);
+        listView = findViewById(R.id.eventList);
+        listView.setAdapter(adapter);
 
         TextView emptyView = findViewById(R.id.empty);
-        list.setEmptyView(emptyView);
+        listView.setEmptyView(emptyView);
     }
 
     //TODO: change menu to something more fitting. maybe add a toolbox?
