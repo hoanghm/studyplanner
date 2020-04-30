@@ -39,6 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/border"
+        android:gravity="center"
         android:layout_weight="@integer/notes_weight">
         <Button
             android:id="@+id/event_notes_button"
