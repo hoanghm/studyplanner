@@ -14,7 +14,7 @@
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="@dimen/topMargin"
         android:ems="10"
         android:hint="@string/headingTitle"
         android:inputType="textPersonName"
@@ -57,7 +57,7 @@
         android:id="@+id/BtnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="@dimen/topMargin"
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -79,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/typeView"
+        app:layout_constraintStart_toStartOf="parent"
         >
 
         <RadioButton
@@ -88,8 +89,7 @@
             android:checked="true"
             android:text="@string/event_type_1"
             app:layout_constraintStart_toEndOf="@+id/typeView"
-            tools:layout_editor_absoluteY="121dp"
-            android:layout_marginStart="30dp"/>
+            android:layout_marginStart="@dimen/recessRadioButtons"/>
 
         <RadioButton
             android:id="@+id/radioExam"
@@ -97,8 +97,7 @@
             android:layout_height="wrap_content"
             android:text="@string/event_type_2"
             app:layout_constraintStart_toEndOf="@+id/radioMale"
-            tools:layout_editor_absoluteY="121dp"
-            android:layout_marginStart="30dp"/>
+            android:layout_marginStart="@dimen/recessRadioButtons"/>
 
         <RadioButton
             android:id="@+id/radioOthers"
@@ -106,8 +105,7 @@
             android:layout_height="wrap_content"
             android:text="@string/event_type_3"
             app:layout_constraintStart_toEndOf="@+id/radioMale"
-            tools:layout_editor_absoluteY="121dp"
-            android:layout_marginStart="30dp"/>
+            android:layout_marginStart="@dimen/recessRadioButtons"/>
 
     </RadioGroup>
 
