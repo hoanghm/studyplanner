@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/paddingEvtCpntLayout">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -15,16 +15,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:id="@+id/event_title"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"/>
+                android:padding="@dimen/paddingEventCpnt"
+                android:id="@+id/event_title"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/event_time"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"/>
+                android:id="@+id/event_time"/>
 
         </LinearLayout>
 
@@ -32,29 +28,20 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentEnd="true">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
+                android:padding="@dimen/paddingEventCpnt"
                 android:id="@+id/edit_event"
                 android:text="@string/edit"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
+                android:padding="@dimen/paddingEventCpnt"
                 android:id="@+id/done_event"
                 android:text="@string/delete"/>
         </LinearLayout>
-
-
-
-
-
     </RelativeLayout>
-    <!--background color and borders are defined in the Drawable file-->
-
-
 </LinearLayout>

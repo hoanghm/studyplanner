@@ -4,4 +4,10 @@
     <item name="type_weight" type="integer" format="float">0.25</item>
     <item name="time_weight" type="integer" format="float">0.2</item>
     <item name="notes_weight" type="integer" format="float">0.2</item>
+    <dimen name="topMargin">76dp</dimen>
+    <dimen name="recessRadioButtons">30dp</dimen>
+    <dimen name="zeroWidth">0dp</dimen>
+    <dimen name="marginToolbar">55dp</dimen>
+    <dimen name="paddingEventCpnt">1dp</dimen>
+    <dimen name="paddingEvtCpntLayout">10dp</dimen>
 </resources>
